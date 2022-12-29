@@ -70,8 +70,14 @@ namespace UnityStandardAssets.Vehicles.Car
 
             m_Rigidbody = GetComponent<Rigidbody>();
             m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl*m_FullTorqueOverAllWheels);
+
+            SaveScript.TopSpeed = m_Topspeed;
         }
 
+        private void Update()
+        {
+            SaveScript.Speed = CurrentSpeed;
+        }
 
         private void GearChanging()
         {
@@ -230,12 +236,10 @@ namespace UnityStandardAssets.Vehicles.Car
                 if (CurrentSpeed > 5 && Vector3.Angle(transform.forward, m_Rigidbody.velocity) < 50f)
                 {
                     m_WheelColliders[i].brakeTorque = m_BrakeTorque*footbrake;
-                    Debug.Log("Pierwszy if");
                 }
-                //tutaj przydaloby sie wychamowac pojazd zanim zacznie jechac w tyl
+                //tutaj przydaloby sie wyhamowac pojazd zanim zacznie jechac w tyl
                 else if (footbrake > 0)
                 {
-                    Debug.Log("Drugi if");
                     m_WheelColliders[i].brakeTorque = 0f;
                     m_WheelColliders[i].motorTorque = -m_ReverseTorque*footbrake;
                 }
